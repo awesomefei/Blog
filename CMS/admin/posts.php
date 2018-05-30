@@ -23,11 +23,11 @@ if(isset($_GET['source'])){
     $source = '';
 }
 switch($source ){
-    case '34';
-        echo 'nice';
+    case 'add_post';
+        include "includes/add_post.php";
         break;
-    case '100';
-        echo 'nice';
+    case 'edit_post';
+        include "includes/edit_post.php";
         break;
      case '200';
         echo 'nice 200';
