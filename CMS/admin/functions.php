@@ -2,7 +2,7 @@
 
 function confirmQuery($result){
     global $connection;
-    if($create_post_query){
+    if(!$result){
         die("QUERY FAILED ." . mysqli_error($connection));
     }
 }
