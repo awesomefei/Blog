@@ -1,18 +1,18 @@
 <?php
 
 if(isset($_POST['create_post'])) {
-    $post_title        = escape($_POST['title']);
-    $post_author         = escape($_POST['post_author']);
-    $post_category_id  = escape($_POST['post_category']);
-    $post_status       = escape($_POST['post_status']);
+    $post_title        = $_POST['post_title'];
+    $post_author         = $_POST['post_author'];
+    $post_category_id  = $_POST['post_category'];
+    $post_status       = $_POST['post_status'];
 
-    $post_image        = escape($_FILES['image']['name']);
-    $post_image_temp   = escape($_FILES['image']['tmp_name']);
+    $post_image        = $_FILES['image']['name'];
+    $post_image_temp   = $_FILES['image']['tmp_name'];
 
 
-    $post_tags         = escape($_POST['post_tags']);
-    $post_content      = escape($_POST['post_content']);
-    $post_date         = escape(date('d-m-y'));
+    $post_tags         = $_POST['post_tags'];
+    $post_content      = $_POST['post_content'];
+    $post_date         = date('d-m-y');
 
     move_uploaded_file($post_image_temp, "../image/$post_image" );
 
@@ -36,17 +36,28 @@ if(isset($_POST['create_post'])) {
 <form action="" method="post" enctype="multipart/form-data">    
  <div class="form-group">
      <label for="title">Post Title</label>
-      <input type="text" class="form-control" name="title">
+      <input type="text" class="form-control" name="post_title">
 </div>
 
 <div class="form-group">
      <label for="title">Post Author</label>
-      <input type="text" class="form-control" name="author">
+      <input type="text" class="form-control" name="post_author">
 </div>
 
 <div class="form-group">
-     <label for="title">Post Category Id</label>
-      <input type="text" class="form-control" name="post_category_id">
+    <label for="title">Post Category</label>
+     <select name="post_category" id="post_cat">
+<?php
+    $query = "SELECT * FROM category";
+    $select_cat = mysqli_query($connection,$query);
+    confirmQuery($select_cat);
+    while($row = mysqli_fetch_assoc($select_cat)){
+        $cat_title = $row['cat_title'];
+        $cat_id = $row['cat_id']; 
+        echo "<option value='{$cat_id}'>{$cat_title}</option>";
+    }
+?>
+    </select>
 </div>
 
 

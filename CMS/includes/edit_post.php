@@ -31,10 +31,12 @@ if(isset($_POST['update_post'])){
     $post_tags         = $_POST['post_tags'];
     $post_content      = $_POST['post_content'];
     $post_date         = date('d-m-y');
+    
+//https://stackoverflow.com/questions/8103860/move-uploaded-file-gives-failed-to-open-stream-permission-denied-error-after
     move_uploaded_file($post_image_temp, "../image/$post_image" );
     
     if(empty($post_image)){
-        $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
+        $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
         $select_image=mysqli_query($connection, $query);
         
         while(mysqli_fetch_array($select_image)){
