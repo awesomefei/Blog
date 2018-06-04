@@ -6,7 +6,7 @@ if(isset($_GET['edit_user'])){
     
     while($row = mysqli_fetch_assoc($select_users_query)){
          $user_id = $row['user_id'];
-        echo $username = $row['username'];        
+         $username = $row['username'];        
          $user_firstname = $row['user_firstname'];
          $user_lastname = $row['user_lastname'];
          $user_email = $row['user_email'];
@@ -30,51 +30,49 @@ if(isset($_POST['edit_user'])) {
 //    move_uploaded_file($post_image_temp, "../image/$post_image" );
 //
 //
-    $query = "INSERT INTO users(user_firstname, user_lastname, role,username,user_email,user_password) ";
-
-    $query .= "VALUES('{$user_firstname}','{$user_lastname}','{$user_role}','{$username}','{$user_email}','{$user_password}') "; 
-
-    $create_user_query = mysqli_query($connection, $query);  
-
-    confirmQuery($create_user_query);
-
-//    $the_user_id = mysqli_insert_id($connection);
-//    
-//    echo "<p class='bg-success'>Post Created. <a href='../post.php?p_id={$the_post_id}'>View Post </a> or <a href='posts.php'>Edit More Posts</a></p>";
-       
-
-
-   }    
+    $query = "UPDATE users SET ";
+    $query .="username = '{$username}', ";
+    $query .="user_firstname = '{$user_firstname}', ";
+    $query .="user_lastname = '{$user_lastname}', ";
+    $query .="role = '{$user_role}', ";
+    $query .="user_email = '{$user_email}', ";
+    $query .="user_password = '{$user_password}' ";
+    $query .="WHERE user_id = '{$user_id}' ";
+    
+    $update_user = mysqli_query($connection,$query);
+    confirmQuery($update_user);
+    header("Location:users.php");
+}
+    
 ?> 
 <form action="" method="post" enctype="multipart/form-data">    
 
 <div class="form-group">
      <label for="title">Firstname</label>
-      <input type="text" class="form-control" name="user_firstname">
+      <input type="text" class="form-control" name="user_firstname" value="<?php
+       echo $user_firstname                                                 ?>">
 </div>
 
 <div class="form-group">
      <label for="title">Lastname</label>
-      <input type="text" class="form-control" name="user_lastname">
+      <input type="text" class="form-control" name="user_lastname" value="<?php
+       echo $user_lastname                                                 ?>">
 </div>
 
 
 <div class="form-group">
      <select name="user_role" >
-     <option value="subscriber">Select Options</option>
-     <option value="admin">Admin</option>
-     <option value="subscriber">Subscriber</option>
-
-<?php
-//    $query = "SELECT * FROM users";
-//    $select_user = mysqli_query($connection,$query);
-//    confirmQuery($select_user);
-//    while($row = mysqli_fetch_assoc($select_user)){
-//        $user_id = $row['user_id'];
-//        $user_role = $row['role']; 
-//        echo "<option value='{$user_id}'>{$user_role}</option>";
-//    }
-?>
+     <option value="subscriber"><?php
+        echo $user_role;
+    ?></option>
+    <?php
+       if($user_role == 'admin'){
+           echo "<option value='subscriber'>subscriber</option>";
+       }else{
+           echo "<option value='admin'>admin</option>";
+       }    
+    ?>
+          
     </select>
 </div>
 
@@ -88,21 +86,24 @@ if(isset($_POST['edit_user'])) {
 
       <div class="form-group">
          <label for="post_tags">Username</label>
-          <input type="text" class="form-control" name="username">
+          <input value="<?php
+       echo $username                                                 ?>" type="text" class="form-control" name="username">
       </div>
       
       <div class="form-group">
          <label for="user_email">Email</label>
-         <input type="email" class="form-control" name="user_email">
+         <input value="
+      <?php
+       echo $user_email                                                 ?>" type="email" class="form-control" name="user_email">
       </div>
       
       <div class="form-group">
          <label for="user_password">Password</label>
-         <input type="password" class="form-control" name="user_password">
+         <input type="password" value="<?php echo $user_password ?>" class="form-control" name="user_password">
       </div>
       
        <div class="form-group">
-          <input class="btn btn-primary" type="submit" name="edit_user" value="Add User">
+          <input class="btn btn-primary" type="submit" name="edit_user" value="Update User">
       </div>
 
 
