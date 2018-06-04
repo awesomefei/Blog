@@ -40,9 +40,9 @@
 //        }
         
         
-        echo "<td><a href='comments.php?approve='>Approve</a></td>";
-        echo "<td><a href='comments.php?unapprove='>Unapprove</a></td>";   
-        echo "<td><a href='comments.php?delete='>Delete</a></td>";      
+        echo "<td><a href='users.php?approve='>Approve</a></td>";
+        echo "<td><a href='users.php?unapprove='>Unapprove</a></td>";   
+        echo "<td><a href='users.php?delete={$user_id}'>Delete</a></td>";      
         echo "<tr>";
 
     }
@@ -67,10 +67,10 @@ if(isset($_GET['unapprove'])){
 
 
 if(isset($_GET['delete'])){
-    $the_comment_id = $_GET['delete'];
-    $query = "DELETE FROM comments WHERE comment_id = {$the_comment_id}";
-    $$delete_query = mysqli_query($connection, $query);
-    header("Location:comments.php");
+    $the_user_id = $_GET['delete'];
+    $query = "DELETE FROM users WHERE user_id = {$the_user_id}";
+    $delete_query = mysqli_query($connection, $query);
+    header("Location:users.php");
 }
 
 ?>

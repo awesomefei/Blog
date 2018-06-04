@@ -1,33 +1,31 @@
 <?php
 
-if(isset($_POST['create_post'])) {
-    $post_title        = $_POST['post_title'];
-    $post_author         = $_POST['post_author'];
-    $post_category_id  = $_POST['post_category'];
-    $post_status       = $_POST['post_status'];
+if(isset($_POST['create_user'])) {
+    $user_firstname = $_POST['user_firstname'];
+    $user_lastname = $_POST['user_lastname'];
+    $user_role = $_POST['user_role'];
+//
+//    $user_image        = $_FILES['image']['name'];
+//    $user_image_temp   = $_FILES['image']['tmp_name'];
 
-    $post_image        = $_FILES['image']['name'];
-    $post_image_temp   = $_FILES['image']['tmp_name'];
+    $username           = $_POST['username'];
+    $user_email         = $_POST['user_email'];
+    $user_password      = $_POST['user_password'];
 
+//    move_uploaded_file($post_image_temp, "../image/$post_image" );
+//
+//
+    $query = "INSERT INTO users(user_firstname, user_lastname, role,username,user_email,user_password) ";
 
-    $post_tags         = $_POST['post_tags'];
-    $post_content      = $_POST['post_content'];
-    $post_date         = date('d-m-y');
+    $query .= "VALUES('{$user_firstname}','{$user_lastname}','{$user_role}','{$username}','{$user_email}','{$user_password}') "; 
 
-    move_uploaded_file($post_image_temp, "../image/$post_image" );
+    $create_user_query = mysqli_query($connection, $query);  
 
+    confirmQuery($create_user_query);
 
-    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date,post_image,post_content,post_tags,post_status) ";
-
-    $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}',now(),'{$post_image}','{$post_content}','{$post_tags}', '{$post_status}') "; 
-
-    $create_post_query = mysqli_query($connection, $query);  
-
-    confirmQuery($create_post_query);
-
-    $the_post_id = mysqli_insert_id($connection);
-    
-    echo "<p class='bg-success'>Post Created. <a href='../post.php?p_id={$the_post_id}'>View Post </a> or <a href='posts.php'>Edit More Posts</a></p>";
+//    $the_user_id = mysqli_insert_id($connection);
+//    
+//    echo "<p class='bg-success'>Post Created. <a href='../post.php?p_id={$the_post_id}'>View Post </a> or <a href='posts.php'>Edit More Posts</a></p>";
        
 
 
@@ -45,32 +43,27 @@ if(isset($_POST['create_post'])) {
       <input type="text" class="form-control" name="user_lastname">
 </div>
 
-<!--
+
 <div class="form-group">
-    <label for="title">Add User</label>
-     <select name="post_category" id="post_cat">
+     <select name="user_role" >
+     <option value="subscriber">Select Options</option>
+     <option value="admin">Admin</option>
+     <option value="subscriber">Subscriber</option>
+
 <?php
 //    $query = "SELECT * FROM users";
-//    $select_cat = mysqli_query($connection,$query);
-//    confirmQuery($select_cat);
-//    while($row = mysqli_fetch_assoc($select_cat)){
-//        $cat_title = $row['cat_title'];
-//        $cat_id = $row['cat_id']; 
-//        echo "<option value='{$cat_id}'>{$cat_title}</option>";
+//    $select_user = mysqli_query($connection,$query);
+//    confirmQuery($select_user);
+//    while($row = mysqli_fetch_assoc($select_user)){
+//        $user_id = $row['user_id'];
+//        $user_role = $row['role']; 
+//        echo "<option value='{$user_id}'>{$user_role}</option>";
 //    }
 ?>
     </select>
 </div>
--->
 
-<div class="form-group">
-     <select name="post_status" id="">
-         <option value="draft">Post Status</option>
-         <option value="published">Published</option>
-         <option value="draft">Draft</option>
-     </select>
-  </div>
-      
+
 <!--
     <div class="form-group">
          <label for="post_image">Post Image</label>
