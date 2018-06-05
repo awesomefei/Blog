@@ -27,7 +27,6 @@
         
         if($post_status !== 'published'){
             echo "<h1 class='text-center'>No post</h1>";
-            echo "hello";
         }else{
             
         
