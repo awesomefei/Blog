@@ -22,10 +22,17 @@
                         echo "<li><a href='#'>{$cat_title}</a></li>";
                     }
                     ?>
-                    <<li>
-                        <a href="admin">admin</a>
+                    <li>
+                        <a href="admin">Admin</a>
                     </li>
-
+<?php
+if(isset($_SESSION['username'])){
+    if(isset($_GET['p_id'])){
+        $post_id = $_GET['p_id'];
+        echo "<li><a href='admin/post.php?source=edit_post&p_id={$post_id}'>Edit Post</a></li>";
+    }
+}    
+?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
