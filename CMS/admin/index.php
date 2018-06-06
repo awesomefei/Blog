@@ -136,9 +136,13 @@
 </div>
                 <!-- /.row -->
 <?php
+    $query = "SELECT * FROM posts WHERE post_status = 'published'";
+    $select_all_published_post = mysqli_query($connection, $query);
+    $user_published_count = mysqli_num_rows($select_all_published_post);
+    
     $query = "SELECT * FROM posts WHERE post_status = 'draft'";
-    $select_all_daft_post = mysqli_query($connection, $query);
-    $user_draft_count = mysqli_num_rows($select_all_daft_post);
+    $select_all_draft_post = mysqli_query($connection, $query);
+    $user_draft_count = mysqli_num_rows($select_all_draft_post);
                 
     $query = "SELECT * FROM comments WHERE comment_status = 'approved'";
     $select_all_approved_comment = mysqli_query($connection, $query);
@@ -160,10 +164,10 @@
           ['Data', 'Count'],
             //display the data
             <?php
-            $element_text = ['Active Posts','Draft Posts', 'Comments', 'Approved Comments', 'Users', 'Subscriber', 'Categories'];
-            $element_count = [$post_counts, $user_draft_count, $comment_counts, $user_approved_count, $user_counts, $user_role_count, $category_counts];
+            $element_text = ['All Posts', 'Active Posts','Draft Posts', 'Comments', 'Approved Comments', 'Users', 'Subscriber', 'Categories'];
+            $element_count = [$post_counts, $user_published_count, $user_draft_count, $comment_counts, $user_approved_count, $user_counts, $user_role_count, $category_counts];
             
-            for($i = 0; $i <7; $i++){
+            for($i = 0; $i <8; $i++){
                 echo "['{$element_text[$i]}'" . "," . "{$element_count[$i]}],";
             }
             

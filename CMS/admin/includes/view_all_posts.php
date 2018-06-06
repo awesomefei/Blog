@@ -1,21 +1,35 @@
+<form action="" method="post">
 <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Author</th>
-                                    <th>Title</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                    <th>Image</th>
-                                    <th>Tags</th>
-                                    <th>Comments</th>
-                                    <th>Date</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
+   <div id="bulkOptionsContainer" class="col-xs-4">
+       <select name="" id="" class="form-control"> 
+           <option value="">Select Options</option>
+           <option value="">Publish</option>
+           <option value="">Draft</option>
+           <option value="">Delete</option>
+        </select>
+       
+   </div>
+   <div class="col-xs-4">
+       <input type="submit" name="submit" class="btn btn-success" value="Apply">
+       <a href="add_post.php" class="btn btn-primary">Add New</a>
+   </div>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Author</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Image</th>
+            <th>Tags</th>
+            <th>Comments</th>
+            <th>Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+
+        </tr>
+    </thead>
+<tbody>
 <?php
     $query = 'SELECT * FROM posts';
     $select_posts = mysqli_query($connection,$query);                                    
@@ -59,6 +73,7 @@
                                 
                             </tbody>
                         </table>
+</form>                        
 <?php
 if(isset($_GET['delete'])){
     $the_post_id = $_GET['delete'];
