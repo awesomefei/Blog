@@ -1,11 +1,42 @@
+<?php
+if(isset($_POST['checkBoxArray'])){
+    foreach($_POST['checkBoxArray'] as $postValueId){
+        $bulk_options = $_POST['bulk_options'];
+        switch($bulk_options){
+                case 'published':
+                echo $bulk_options;
+                $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id= {$postValueId} ";
+                $update_to_published = mysqli_query($connection, $query);
+                confirmQuery($update_to_published);
+                break;
+                
+                case 'draft':
+                echo $bulk_options;
+                $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id= {$postValueId} ";
+                $update_to_draft = mysqli_query($connection, $query);
+                confirmQuery($update_to_draft);
+                break;
+                
+                case 'delete':
+                echo $bulk_options;
+                $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id= {$postValueId} ";
+                $update_to_delete = mysqli_query($connection, $query);
+                confirmQuery($update_to_delete);
+                break;
+        }
+    }
+}
+
+?>
+
 <form action="" method="post">
 <table class="table table-bordered table-hover">
    <div id="bulkOptionsContainer" class="col-xs-4">
-       <select name="" id="" class="form-control"> 
+       <select name="bulk_options" id="" class="form-control"> 
            <option value="">Select Options</option>
-           <option value="">Publish</option>
-           <option value="">Draft</option>
-           <option value="">Delete</option>
+           <option value="published">Publishe</option>
+           <option value="draft">Draft</option>
+           <option value="delete">Delete</option>
         </select>
        
    </div>
@@ -15,6 +46,7 @@
    </div>
     <thead>
         <tr>
+            <th><input type="checkbox" id="selectAllbox"></th>
             <th>Id</th>
             <th>Author</th>
             <th>Title</th>
@@ -45,6 +77,10 @@
          $post_comment_count = $row['post_comment_count'];
         
         echo "<tr>";
+?>
+        
+        <td><input type='checkbox' class='checkBox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>;
+<?php
         echo "<td>$post_id</td>";
         echo "<td>$post_author</td>";
         echo "<td>$post_title</td>";
