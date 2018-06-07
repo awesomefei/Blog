@@ -4,21 +4,18 @@ if(isset($_POST['checkBoxArray'])){
         $bulk_options = $_POST['bulk_options'];
         switch($bulk_options){
                 case 'published':
-                echo $bulk_options;
                 $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id= {$postValueId} ";
                 $update_to_published = mysqli_query($connection, $query);
                 confirmQuery($update_to_published);
                 break;
                 
                 case 'draft':
-                echo $bulk_options;
                 $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id= {$postValueId} ";
                 $update_to_draft = mysqli_query($connection, $query);
                 confirmQuery($update_to_draft);
                 break;
                 
                 case 'delete':
-                echo $bulk_options;
                 $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id= {$postValueId} ";
                 $update_to_delete = mysqli_query($connection, $query);
                 confirmQuery($update_to_delete);
@@ -79,7 +76,7 @@ if(isset($_POST['checkBoxArray'])){
         echo "<tr>";
 ?>
         
-        <td><input type='checkbox' class='checkBox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>;
+        <td><input type='checkbox' class='checkBoxs' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>;
 <?php
         echo "<td>$post_id</td>";
         echo "<td>$post_author</td>";
