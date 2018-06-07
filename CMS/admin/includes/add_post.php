@@ -29,8 +29,6 @@ if(isset($_POST['create_post'])) {
     
     echo "<p class='bg-success'>Post Created. <a href='../post.php?p_id={$the_post_id}'>View Post </a> or <a href='posts.php'>Edit More Posts</a></p>";
        
-
-
    }    
 ?> 
 <form action="" method="post" enctype="multipart/form-data">    
@@ -58,12 +56,6 @@ if(isset($_POST['create_post'])) {
     }
 ?>
     </select>
-</div>
-
-
-<div class="form-group">
-     <label for="title">Post Status</label>
-      <input type="text" class="form-control" name="post_status">
 </div>
 
 <div class="form-group">
