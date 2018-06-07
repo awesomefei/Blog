@@ -62,9 +62,7 @@ if(isset($_POST['edit_user'])) {
 
 <div class="form-group">
      <select name="user_role" >
-     <option value="subscriber"><?php
-        echo $user_role;
-    ?></option>
+     <option value="<?php echo $user_role; ?>"><?php echo $user_role; ?></option>
     <?php
        if($user_role == 'admin'){
            echo "<option value='subscriber'>subscriber</option>";
@@ -77,12 +75,6 @@ if(isset($_POST['edit_user'])) {
 </div>
 
 
-<!--
-    <div class="form-group">
-         <label for="post_image">Post Image</label>
-          <input type="file"  name="image">
-    </div>
--->
 
       <div class="form-group">
          <label for="post_tags">Username</label>
