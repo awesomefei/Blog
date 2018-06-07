@@ -19,7 +19,7 @@ if(isset($_POST['edit_user'])) {
     $user_firstname = $_POST['user_firstname'];
     $user_lastname = $_POST['user_lastname'];
     $user_role = $_POST['user_role'];
-//
+
 //    $user_image        = $_FILES['image']['name'];
 //    $user_image_temp   = $_FILES['image']['tmp_name'];
 
@@ -28,20 +28,33 @@ if(isset($_POST['edit_user'])) {
     $user_password      = $_POST['user_password'];
 
 //    move_uploaded_file($post_image_temp, "../image/$post_image" );
-//
-//
-    $query = "UPDATE users SET ";
-    $query .="username = '{$username}', ";
-    $query .="user_firstname = '{$user_firstname}', ";
-    $query .="user_lastname = '{$user_lastname}', ";
-    $query .="role = '{$user_role}', ";
-    $query .="user_email = '{$user_email}', ";
-    $query .="user_password = '{$user_password}' ";
-    $query .="WHERE user_id = '{$user_id}' ";
     
-    $update_user = mysqli_query($connection,$query);
-    confirmQuery($update_user);
-    header("Location:users.php");
+    if(!empty($user_password)){
+        $query_password = "SELECT user_password FROM users WHERE user_id = $the_user_id";
+        $get_user_query = mysqli_query($connection, $query_password);
+        confirmQuery($get_user_query);
+       
+        
+        $row = mysqli_fetch_array($get_user_query);
+        $db_user_password = $row['user_password'];
+        
+        if($db_user_password != $user_password){
+            $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' =>12));
+        }
+        $query = "UPDATE users SET ";
+        $query .="username = '{$username}', ";
+        $query .="user_firstname = '{$user_firstname}', ";
+        $query .="user_lastname = '{$user_lastname}', ";
+        $query .="role = '{$user_role}', ";
+        $query .="user_email = '{$user_email}', ";
+        $query .="user_password = '{$user_password}' ";
+        $query .="WHERE user_id = '{$user_id}' ";
+
+        $update_user = mysqli_query($connection,$query);
+        confirmQuery($update_user);
+        header("Location:users.php");
+    }
+    
 }
     
 ?> 
@@ -74,8 +87,6 @@ if(isset($_POST['edit_user'])) {
     </select>
 </div>
 
-
-
       <div class="form-group">
          <label for="post_tags">Username</label>
           <input value="<?php
@@ -91,7 +102,7 @@ if(isset($_POST['edit_user'])) {
       
       <div class="form-group">
          <label for="user_password">Password</label>
-         <input type="password" value="<?php echo $user_password ?>" class="form-control" name="user_password">
+         <input autocomplete="off" type="password"  class="form-control" name="user_password">
       </div>
       
        <div class="form-group">
