@@ -1,4 +1,24 @@
 <?php
+function isAdmin($username=''){
+    global $connection;
+    $query = "SELECT role FROM users WHERE username = '$username'";
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+    $row = mysqli_fetch_array($result);
+    if($row['role'] == 'admin'){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+
+function escape($string){
+    global $connection;
+    mysqli_real_escape_string($connection, trim($string));
+}
+
 
 function confirmQuery($result){
     global $connection;
