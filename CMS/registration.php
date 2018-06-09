@@ -1,42 +1,56 @@
 <?php  include "includes/db.php"; ?>
 <?php  include "includes/header.php"; ?>
+<?php  include "admin/functions.php"; ?>
 <?php
 if(isset($_POST['submit'])){
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
     
-    if(!empty($username)&&!empty($email)&&!empty($password)){
-    
-        $username = mysqli_real_escape_string($connection,$username);
-        $email = mysqli_real_escape_string($connection,$email);
-        $password = mysqli_real_escape_string($connection,$password);
-        
-        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' =>12) );
-
-        $query = "INSERT INTO users (username, user_email, user_password, role) ";
-        $query .= "VALUE('{$username}', '{$email}', '{$password}', 'subscriber' )";
-        $register_user_query = mysqli_query($connection, $query);
-        if(!$register_user_query){
-            die("Query Failed". mysqli_error($connection)) . ' '. mysqli_error($connection);
-        }
-        
-        $message = "Your registration has been submitted";
-    }else{
-        echo "<script>alert('can not be empty')  </script>";
+    $error = [
+        'username' => '',
+        'email' => '',
+        'password' => ''        
+    ];
+    if(strlen($username) < 4){
+        $error['usernmae'] = 'Username needs longer';
     }
     
-}else{
-    $message = '';
+    if($username == ''){
+        $error['usernmae'] = 'Username can not be empty';
+        
+    }
+    
+    if(is_username_duplicate($username)){
+        $error['usernmae'] = 'Username already exists, pick another one';
+        
+    }
+    
+    if($email == ''){
+        $error['email'] = 'Email can not be empty';
+        
+    }
+    
+    if(is_email_duplicate($email)){
+        $error['email'] = 'Email already exists, pick another one';
+    }
+    
+    if($password == ''){
+        $error['password'] = 'Password can not be empty';
+        
+    }
+    
+    foreach($error as $key => $value){
+        if(empty($value)){
+//            register_user($username, $email, $password);
+//            login_user($username,$password);
+        }
+    }
 }
-
 ?>
-
     <!-- Navigation -->
     
-    <?php  include "includes/navigation.php"; ?>
-    
- 
+    <?php  include "includes/navigation.php"; ?> 
     <!-- Page Content -->
     <div class="container">
     
@@ -47,7 +61,6 @@ if(isset($_POST['submit'])){
                 <div class="form-wrap">
                 <h1>Register</h1>
                     <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
-                       <h6><?php  echo $message; ?></h6>
                         <div class="form-group">
                             <label for="username" class="sr-only">username</label>
                             <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username">

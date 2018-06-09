@@ -1,4 +1,40 @@
 <?php
+
+function login_user($username, $password){
+    global $connection;
+    
+    $username = trim($username);
+    $password = trim($password);
+//avoid hack
+    $username = mysqli_real_escape_string($connection, $username);
+    $password = mysqli_real_escape_string($connection, $password);
+
+    $query = "SELECT * FROM users WHERE username = '{$username}' ";
+    $select_user_query = mysqli_query($connection, $query);
+    if(!$select_user_query){
+        die("QUERY FAILED". mysqli_error($connection));
+    }
+    while($row = mysqli_fetch_array($select_user_query)){
+         $db_user_id = $row['user_id'];
+         $db_username = $row['username'];  
+         $db_user_password = $row['user_password'];
+         $db_user_firstname = $row['user_firstname'];
+         $db_user_lastname = $row['user_lastname'];
+         $db_user_role = $row['role'];
+    }
+    
+    if(password_verify($password, $db_user_password)){
+        $_SESSION['username']= $db_username;
+        $_SESSION['firstname']= $db_user_firstname;
+        $_SESSION['lastname']= $db_user_lastname;
+        $_SESSION['user_role']= $db_user_role;
+        header("Location:../admin");
+    }else {
+        header("Location:../index.php");
+    } 
+ 
+}
+
 function isAdmin($username=''){
     global $connection;
     $query = "SELECT role FROM users WHERE username = '$username'";
@@ -13,7 +49,64 @@ function isAdmin($username=''){
 }
 
 
+function is_username_duplicate($username){
+    global $connection;
+    $query = "SELECT username FROM users WHERE username = '$username'";
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+    if(mysqli_num_rows($result) > 0){
+        return true;
+    }else{
+        return false;
+    }
+}
 
+function is_email_duplicate($email){
+    global $connection;
+    $query = "SELECT user_email FROM users WHERE user_email = '$email'";
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+    if(mysqli_num_rows($result) > 0){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function register_user($username, $email, $password){
+    global $connection;
+    
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    
+    if(is_username_duplicate($username) or is_email_duplicate($email)){
+        
+    }
+    
+    if(!empty($username)&&!empty($email)&&!empty($password)){
+    
+        $username = mysqli_real_escape_string($connection,$username);
+        $email = mysqli_real_escape_string($connection,$email);
+        $password = mysqli_real_escape_string($connection,$password);
+        
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' =>12) );
+
+        $query = "INSERT INTO users (username, user_email, user_password, role) ";
+        $query .= "VALUE('{$username}', '{$email}', '{$password}', 'subscriber' )";
+        $register_user_query = mysqli_query($connection, $query);
+        
+        confirmQuery($register_user_query);
+        
+        $message = "Your registration has been submitted";
+    }
+}
+
+function redirect($loaction){
+    return header('Location:' . $location);
+}
+
+//for secuity of deploying to internet
 function escape($string){
     global $connection;
     mysqli_real_escape_string($connection, trim($string));
