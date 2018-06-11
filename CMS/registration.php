@@ -12,14 +12,14 @@ if(isset($_POST['submit'])){
         'email' => '',
         'password' => ''        
     ];
-    if(strlen($username) < 4){
-        $error['usernmae'] = 'Username needs longer';
-    }
-    
     if($username == ''){
-        $error['usernmae'] = 'Username can not be empty';
+        $error['username'] = 'Username can not be empty';
         
     }
+    if(strlen($username) < 4){
+        $error['username'] = 'Username needs longer';
+    }
+    
     
     if(is_username_duplicate($username)){
         $error['usernmae'] = 'Username already exists, pick another one';
@@ -72,14 +72,14 @@ if(isset($_POST['submit'])){
                                                     <div class="form-group">
                             <label for="email" class="sr-only">Email</label>
                             <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com"
-                            autocomplete="on" value="<?php echo isset($email) ? $email : '' ?>"
+                            autocomplete="on" value="<?php echo isset($email) ? $email : '' ?>">
                             <p><?php echo isset($error['email']) ? $error['email']: '' ?></p>
                             
-                            >
                         </div>
                          <div class="form-group">
                             <label for="password" class="sr-only">Password</label>
-                            <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                            <input type="password" name="password" id="key" class="form-control" placeholder="Password" value="<?php echo isset($password) ? $password : '' ?>">
+                            <p><?php echo isset($error['password']) ? $error['password']: '' ?></p>
                         </div>
                 
                         <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
