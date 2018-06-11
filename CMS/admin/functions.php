@@ -28,9 +28,9 @@ function login_user($username, $password){
         $_SESSION['firstname']= $db_user_firstname;
         $_SESSION['lastname']= $db_user_lastname;
         $_SESSION['user_role']= $db_user_role;
-        header("Location:../admin");
+        redirect("/cms/admin");
     }else {
-        header("Location:../index.php");
+        redirect("/cms/index.php");
     } 
  
 }
@@ -75,34 +75,22 @@ function is_email_duplicate($email){
 
 function register_user($username, $email, $password){
     global $connection;
-    
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    
-    if(is_username_duplicate($username) or is_email_duplicate($email)){
-        
-    }
-    
-    if(!empty($username)&&!empty($email)&&!empty($password)){
-    
-        $username = mysqli_real_escape_string($connection,$username);
-        $email = mysqli_real_escape_string($connection,$email);
-        $password = mysqli_real_escape_string($connection,$password);
-        
-        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' =>12) );
+       
+    $username = mysqli_real_escape_string($connection,$username);
+    $email = mysqli_real_escape_string($connection,$email);
+    $password = mysqli_real_escape_string($connection,$password);
 
-        $query = "INSERT INTO users (username, user_email, user_password, role) ";
-        $query .= "VALUE('{$username}', '{$email}', '{$password}', 'subscriber' )";
-        $register_user_query = mysqli_query($connection, $query);
-        
-        confirmQuery($register_user_query);
-        
-        $message = "Your registration has been submitted";
-    }
+    $password = password_hash($password, PASSWORD_BCRYPT, array('cost' =>12) );
+
+    $query = "INSERT INTO users (username, user_email, user_password, role) ";
+    $query .= "VALUE('{$username}', '{$email}', '{$password}', 'subscriber' )";
+    $register_user_query = mysqli_query($connection, $query);
+
+    confirmQuery($register_user_query);
+    
 }
 
-function redirect($loaction){
+function redirect($location){
     return header('Location:' . $location);
 }
 

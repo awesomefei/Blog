@@ -2,7 +2,7 @@
 <?php  include "includes/header.php"; ?>
 <?php  include "admin/functions.php"; ?>
 <?php
-if(isset($_POST['submit'])){
+if($_SERVER['REQUEST_METHOD'] == "POST"){
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
@@ -42,9 +42,14 @@ if(isset($_POST['submit'])){
     
     foreach($error as $key => $value){
         if(empty($value)){
-//            register_user($username, $email, $password);
-//            login_user($username,$password);
+            unset($error[$key]);
         }
+    }
+    
+    if(empty($error)){
+        register_user($username, $email, $password);
+        login_user($username, $password);
+       
     }
 }
 ?>
@@ -82,7 +87,7 @@ if(isset($_POST['submit'])){
                             <p><?php echo isset($error['password']) ? $error['password']: '' ?></p>
                         </div>
                 
-                        <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
+                        <input type="submit" name="register" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
                     </form>
                  
                 </div>
